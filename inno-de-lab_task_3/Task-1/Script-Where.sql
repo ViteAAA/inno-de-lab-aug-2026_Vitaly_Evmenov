@@ -1,3 +1,5 @@
+
+-- все клиенты из USA которым больше 25
 SELECT 
 	first_name,
 	last_name,
@@ -8,6 +10,7 @@ FROM
 WHERE age > 25
 	AND country = 'USA';
 
+-- заказы, сумма которых более тысячи
 SELECT 
 	*
 FROM orders

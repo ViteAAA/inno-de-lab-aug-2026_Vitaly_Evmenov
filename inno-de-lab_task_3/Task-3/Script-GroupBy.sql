@@ -1,3 +1,4 @@
+-- колличество клиентов по каждой стране
 SELECT 
 	c.country,
 	count(*)
@@ -6,6 +7,7 @@ FROM
 GROUP BY c.country 
 ORDER BY c.country DESC;
 
+-- общее колличетсво заказов и средняя сумма по каждому товару
 SELECT 
 	item,
 	count(*),
