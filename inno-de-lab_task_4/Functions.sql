@@ -23,3 +23,8 @@ FROM employees;
 CREATE VIEW IT_Department_View AS SELECT EmployeeId, FirstName, LastName, Salary
 FROM employees
 WHERE Department = 'IT';
+
+SELECT
+	*
+FROM 
+	IT_Department_View;

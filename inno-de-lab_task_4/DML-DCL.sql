@@ -25,8 +25,8 @@ FROM employees
 ORDER BY 
 	employeeid  DESC;
 
--- транзакция повышения звания
-BEGIN; -- BEGIN
+-- транзакция обновления отдела сотрудников с зарплатой выше 70000
+BEGIN;
 
 UPDATE employees
 SET department = 'Senior IT'
@@ -38,7 +38,7 @@ FROM employees
 ORDER BY 
 	employeeid DESC;
 
-ROLLBACK; -- END
+ROLLBACK;
 
 -- проверка отката изменений
 SELECT 
@@ -48,7 +48,6 @@ ORDER BY
 	employeeid  DESC;
 
 -- удаление сотрудников
-ROLLBACK;
 SELECT 
 	*
 FROM 
@@ -76,16 +75,15 @@ ORDER BY employeeid;
 ROLLBACK;
 
 -- вставка проекта и назначение сотрудников
-ROLLBACK;
 SELECT 
 	*
 FROM projects;
 
 BEGIN;
 
-INSERT INTO projects (projectid, projectname, budget, startdate, enddate)
+INSERT INTO projects (projectname, budget, startdate, enddate)
 VALUES 
-	(4, 'Update soft for VR', 120000, current_date, DATE'2026-10-01');
+	('Update soft for VR', 120000, current_date, DATE'2026-10-01');
 
 SELECT 
 	*

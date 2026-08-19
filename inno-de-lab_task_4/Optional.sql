@@ -70,13 +70,21 @@ FROM
 BEGIN;
 
 WITH inserted_value AS (
-	INSERT INTO employees (employeeid, firstname, lastname, department, salary, email)
+	INSERT INTO employees (firstname, lastname, department, salary, email)
 	VALUES 
-		(9, 'Evgeny', 'Ivanov', 'HR', 20000, 'evgenyivanov@gmail.com')
+		('Evgeny', 'Ivanov', 'HR', 20000, 'evgenyivanov@gmail.com')
 	RETURNING employeeid
 )
 INSERT INTO employeeprojects (employeeid, projectid, hoursworked)
-SELECT employeeid, 4, 80
+SELECT 
+	employeeid, 
+	(
+		SELECT 
+			Projectid
+		FROM Projects
+		WHERE ProjectName = 'Website Redesign'
+	), 
+	80
 FROM inserted_value;
 
 SELECT

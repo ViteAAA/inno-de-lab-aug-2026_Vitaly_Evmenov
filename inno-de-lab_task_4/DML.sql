@@ -1,9 +1,9 @@
 -- вставка данных в таблицу employees
-INSERT INTO employees (employeeid, firstname, lastname, department, salary)
+INSERT INTO employees (firstname, lastname, department, salary)
 VALUES 
-	(5, 'Eve', 'Davis', 'HR', 58000.00),
-	(6, 'Jon', 'Smith', 'HR', 5000),
-	(7, 'Aron', 'Simson', 'Finance', 50000);
+	('Jon', 'Smith', 'HR', 5000),
+	('Aron', 'Simson', 'Finance', 50000);
+
 
 -- проверка вставки
 SELECT 
