@@ -10,6 +10,7 @@ ALTER TABLE employees DROP COLUMN email;
 -- изменение таблицы employees
 ALTER TABLE employees ADD COLUMN email VARCHAR(100);
 
+-- добавление ограничения UNIQUE для Email
 ALTER TABLE employees ADD CONSTRAINT UQ_Email UNIQUE (email);
 
 -- сделать email обязательным полем (делается только после заполнения этого поля данными, в противном случае - ошибка)
