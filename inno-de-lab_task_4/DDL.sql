@@ -8,7 +8,7 @@ CREATE TABLE Departments (
 ALTER TABLE employees DROP COLUMN email;
 
 -- изменение таблицы employees
-ALTER TABLE employees ADD COLUMN email VARCHAR(50);
+ALTER TABLE employees ADD COLUMN email VARCHAR(100);
 
 ALTER TABLE employees ADD CONSTRAINT UQ_Email UNIQUE (email);
 
