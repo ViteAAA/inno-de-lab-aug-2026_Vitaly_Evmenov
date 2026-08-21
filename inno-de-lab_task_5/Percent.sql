@@ -1,3 +1,4 @@
+-- calculate the percentage of orders for each status
 SELECT
 	COUNT(*) AS order_count,
 	status,
@@ -5,6 +6,6 @@ SELECT
 FROM 
 	dim_orders
 WHERE 
-	orderdata > (CURRENT_DATE - INTERVAL '1 month')
+	orderdate > (CURRENT_DATE - INTERVAL '1 month')
 GROUP BY
 	status;

@@ -1,5 +1,4 @@
-WITH months AS (
--- 1. Генерируем все месяцы текущего года
+WITH months AS ( -- for generation all month in this year
 	SELECT
 		TO_CHAR(d, 'YYYY-MM') AS analysis_month,
 		DATE_TRUNC('month', d) AS month_start,
@@ -11,7 +10,7 @@ WITH months AS (
 	        INTERVAL '1 month'
 	    ) AS d
 ),
-monthly_expenses AS (
+monthly_expenses AS ( -- for calculation expenses in this year
 	SELECT 
 		TO_CHAR(fr.startorderdate, 'YYYY-MM') AS analysis_month,
 		SUM(fr.cost) AS expenses
@@ -24,7 +23,7 @@ monthly_expenses AS (
 	GROUP BY 
 		TO_CHAR(fr.startorderdate, 'YYYY-MM')
 ),
-monthly_earned AS (
+monthly_earned AS ( -- for calculation earning in every month
 	SELECT 
 		TO_CHAR(m.month_start, 'YYYY-MM') AS analysis_month,
 		SUM(dc.price) AS earned

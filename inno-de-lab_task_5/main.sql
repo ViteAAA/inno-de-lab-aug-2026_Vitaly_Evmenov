@@ -1,3 +1,4 @@
+-- assingments of requests
 CREATE TABLE facts_RequestAssignments(
     RequestAssignmentsId SERIAL NOT NULL,
     FK_Realty BIGINT NOT NULL,
@@ -13,7 +14,7 @@ CREATE TABLE facts_RequestAssignments(
 ALTER TABLE
     facts_RequestAssignments ADD PRIMARY KEY(RequestAssignmentsId);
 
-
+-- table of tenants
 CREATE TABLE dim_Tenants(
     TenantId SERIAL NOT NULL,
     Email VARCHAR(250) NOT NULL,
@@ -30,7 +31,7 @@ ALTER TABLE
     dim_Tenants ADD CONSTRAINT dim_tenants_passportid_unique UNIQUE(PassportId);
 
 
- 
+-- table of realty
 CREATE TABLE dim_Realty(
     RealtyId SERIAL NOT NULL,
     Address VARCHAR(100) NOT NULL,
@@ -43,7 +44,9 @@ ALTER TABLE
     dim_Realty ADD PRIMARY KEY(RealtyId);
 ALTER TABLE
     dim_Realty ADD CONSTRAINT dim_realty_address_unique UNIQUE(Address);
- 
+
+
+-- table of orders
 CREATE TABLE dim_Employees(
     EmployeeId SERIAL NOT NULL,
     PassportId BIGINT NOT NULL,
@@ -61,7 +64,8 @@ ALTER TABLE
     dim_Employees ADD CONSTRAINT dim_employees_passportid_unique UNIQUE(PassportId);
 ALTER TABLE
     dim_Employees ADD CONSTRAINT dim_employees_email_unique UNIQUE(Email);
- 
+
+-- table of contracts
 CREATE TABLE dim_Contracts(
     ContractId SERIAL NOT NULL,
     TenantPassportId BIGINT NOT NULL,
@@ -74,7 +78,7 @@ CREATE TABLE dim_Contracts(
 ALTER TABLE
     dim_Contracts ADD PRIMARY KEY(ContractId);
 
- 
+-- table of orders
 CREATE TABLE dim_Orders(
     OrderId SERIAL NOT NULL,
     OrderData DATE NOT NULL,
@@ -95,8 +99,7 @@ ALTER TABLE
 ALTER TABLE
     facts_RequestAssignments ADD CONSTRAINT facts_requestassignments_fk_contractid_foreign FOREIGN KEY(FK_ContractId) REFERENCES dim_Contracts(ContractId);
 
-
--- 1. Недвижимость
+-- 1. Realty
 INSERT INTO dim_realty (realtyid, address, type, rooms, area, description) VALUES
 (1, 'ул. Ленина, д. 10, кв. 45', 'Квартира', 2, 48.5, 'Современная квартира рядом с метро'),
 (2, 'ул. Гагарина, д. 5, кв. 12', 'Квартира', 3, 72.0, 'Просторная квартира для семьи'),
@@ -107,7 +110,7 @@ INSERT INTO dim_realty (realtyid, address, type, rooms, area, description) VALUE
 (7, 'ул. Лесная, д. 3, оф. 102', 'Офис', 2, 42.0, 'Офис на первой линии'),
 (8, 'ул. Речная, д. 12', 'Дом', 5, 180.0, 'Загородный дом для большой семьи');
 
--- 2. Арендаторы
+-- 2. Tenants
 INSERT INTO dim_tenants (tenantid, email, passportid, firstname, lastname, dateofbirthday) VALUES
 (1, 'ivanov@mail.ru', 4515123456, 'Иван', 'Иванов', DATE'1985-03-15'),
 (2, 'petrova@mail.ru', 4515987654, 'Мария', 'Петрова', DATE'1990-07-22'),
@@ -118,14 +121,14 @@ INSERT INTO dim_tenants (tenantid, email, passportid, firstname, lastname, dateo
 (7, 'fedorova@mail.ru', 4515678901, 'Ольга', 'Федорова', DATE'1995-06-25'),
 (8, 'vasiliev@mail.ru', 4515789012, 'Андрей', 'Васильев', DATE'1983-12-03');
 
--- 3. Сотрудники
+-- 3. Employees
 INSERT INTO dim_employees (employeeid, passportid, email, firstname, lastname, employmenttype, contractterm, hiredate) VALUES
 (1, 4515111111, 'smirnova@company.ru', 'Елена', 'Смирнова', 'Риелтор', '2026-12-31', DATE'2020-02-01'),
 (2, 4515222222, 'volkov@company.ru', 'Андрей', 'Волков', 'Менеджер', '2027-06-30', DATE'2021-05-15'),
 (3, 4515333333, 'lebedeva@company.ru', 'Татьяна', 'Лебедева', 'Юрист', '2025-12-31', DATE'2019-08-10'),
 (4, 4515444444, 'kuznetsov@company.ru', 'Павел', 'Кузнецов', 'Мастер', '2026-08-31', DATE'2022-01-20');
 
--- 4. Контракты (разные сценарии: с NULL endcontractperiod, закончившиеся, начатые не с января)
+-- 4. Contracts (different scripts: with NULL endcontractperiod, ended, started in January)
 INSERT INTO dim_contracts (contractid, tenantpassportid, realtyid, contractdescription, startcontractperiod, endcontractperiod, price) VALUES
 (1, 4515123456, 1, 'Договор аренды квартиры на Ленина', DATE'2026-01-01', DATE'2032-01-01', 1500),
 (2, 4515987654, 2, 'Договор аренды квартиры на Гагарина', DATE'2026-01-01', DATE'2026-04-30', 2000),
@@ -139,7 +142,7 @@ INSERT INTO dim_contracts (contractid, tenantpassportid, realtyid, contractdescr
 (10, 4515987654, 8, 'Договор аренды загородного дома', DATE'2026-07-01', DATE'2027-05-28', 6000);
 
 
--- 5. Заказы (worktype — тип работ, status — статус)
+-- 5. Orders
 INSERT INTO dim_orders (orderid, orderdate, worktype, status) VALUES
 (1, DATE'2026-01-10', 'Сантехника', 'Выполнено'),
 (2, DATE'2026-01-25', 'Электрика', 'Выполнено'),
@@ -156,7 +159,7 @@ INSERT INTO dim_orders (orderid, orderdate, worktype, status) VALUES
 (13, DATE'2026-08-08', 'Установка окон', 'Выполнено'),
 (14, DATE'2026-08-18', 'Сантехника', 'Выполнено');
 
--- 6. Назначения заявок (facts) — расходы по месяцам
+-- 6. Assignment of requests
 INSERT INTO facts_requestassignments (requestassignmentsid, fk_realty, fk_tenant, fk_contractid, fk_orderid, fk_employeeid, startorderdate, endorderdate, cost, rating) VALUES
 (1, 1, 1, 1, 1, 1, DATE'2026-01-10', DATE'2026-01-12', 800, 5),
 (2, 5, 5, 5, 2, 2, DATE'2026-01-25', DATE'2026-01-27', 1200, 4),

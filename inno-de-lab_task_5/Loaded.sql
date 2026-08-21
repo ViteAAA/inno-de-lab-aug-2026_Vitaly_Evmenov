@@ -1,3 +1,4 @@
+-- for checking the workload of workers
 SELECT 
 	fr.fk_employeeid,
 	CONCAT(de.firstname, de.lastname) AS full_name,
