@@ -11,9 +11,9 @@ first_number = float(input("Введите 1-ое число: "))
 second_number = float(input("Введите 2-ое число: "))
 math_operator = input("Введите оператор операции: ")
 
-if math_operator in "+-*/":
+if math_operator in "+-*/" and not (math_operator == "/" and second_number == 0):
     result = actions[math_operator](first_number, second_number)
     print(f"Результат: {first_number} {math_operator} {second_number} = {result}")
 else:
-    print("Нет такого оператора")
+    print("Не верные данные")
 
