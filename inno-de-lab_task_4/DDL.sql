@@ -19,8 +19,7 @@ ALTER TABLE employees ALTER COLUMN email SET NOT NULL;
 -- обновление данных в таблице employees
 UPDATE employees
 SET email = LOWER(firstname) || LOWER(lastname) || '@gmail.com';
--- добовление правила в таблице employees
-ALTER TABLE employees ADD CONSTRAINT UQ_Email UNIQUE (email);
+
 
 -- переименование колонки в таблице departments
 ALTER TABLE departments RENAME COLUMN location TO OfficeLocation;
