@@ -5,7 +5,7 @@ CREATE TABLE Departments (
 	Location VARCHAR(50)
 );
 
--- изменение таблицы employees
+-- Добавление столбца Email в Employees
 ALTER TABLE employees ADD COLUMN email VARCHAR(100);
 
 -- добавление ограничения UNIQUE для Email
