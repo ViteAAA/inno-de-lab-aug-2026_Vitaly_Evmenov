@@ -10,7 +10,6 @@ WHERE
 	AND e.lastname = 'Johnson'
 	AND ep.hoursworked > 150
 
-ROLLBACK;
 BEGIN;
 
 UPDATE projects
