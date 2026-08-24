@@ -81,19 +81,24 @@ FROM projects;
 
 BEGIN;
 
-INSERT INTO projects (projectname, budget, startdate, enddate)
-VALUES 
-	('Update soft for VR', 120000, current_date, DATE'2026-10-01');
-
-SELECT 
-	*
-FROM 
-	projects;
-
+WITH inserted_project AS (
+	INSERT INTO projects (projectname, budget, startdate, enddate)
+	VALUES 
+		('Update soft for VR', 120000, current_date, DATE'2026-10-01')
+	RETURNING projectid
+)
 INSERT INTO employeeprojects (employeeid, projectid, hoursworked)
-VALUES
-	(1, 4, 75),
-	(2, 4, 65);
+SELECT 
+	e.employeeid,
+	p.projectid,
+	e.hoursworked
+FROM inserted_project p
+CROSS JOIN 
+	(
+		VALUES 
+			(2, 80),
+			(3, 45)
+) AS e(employeeid, hoursworked);
 	
 
 SELECT 
