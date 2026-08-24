@@ -5,8 +5,6 @@ CREATE TABLE Departments (
 	Location VARCHAR(50)
 );
 
-ALTER TABLE employees DROP COLUMN email;
-
 -- изменение таблицы employees
 ALTER TABLE employees ADD COLUMN email VARCHAR(100);
 
