@@ -2,7 +2,7 @@ WITH months AS ( -- for generation all month in this year
 	SELECT
 		TO_CHAR(d, 'YYYY-MM') AS analysis_month,
 		DATE_TRUNC('month', d) AS month_start,
-		DATE_TRUNC('month', d) + INTERVAL '1 month' - INTERVAL '1 day' AS month_end
+		DATE_TRUNC('month', d) + INTERVAL '1 month' - INTERVAL '2 day' AS month_end
 	FROM
 		generate_series(
 	        DATE_TRUNC('year', NOW()),
@@ -25,22 +25,23 @@ monthly_expenses AS ( -- for calculation expenses in this year
 ),
 monthly_earned AS ( -- for calculation earning in every month
 	SELECT 
-		TO_CHAR(m.month_start, 'YYYY-MM') AS analysis_month,
+		m.analysis_month,
 		SUM(dc.price) AS earned
 	FROM
 		months m
 	INNER JOIN 
 		dim_contracts dc 
-		ON dc.startcontractperiod < m.month_end
+		ON dc.startcontractperiod <= m.month_end
 		AND dc.endcontractperiod >= m.month_start
 		AND dc.endcontractperiod >= DATE_TRUNC('year', NOW())
 	GROUP BY 
-			TO_CHAR(m.month_start, 'YYYY-MM')
+		m.analysis_month
 )
 SELECT
 	m.analysis_month,
 	COALESCE(me.expenses, 0) AS expenses,
-	COALESCE(mer.earned, 0) AS earned
+	COALESCE(mer.earned, 0) AS earned,
+	(COALESCE(mer.earned, 0) - COALESCE(me.expenses, 0)) AS revenue
 FROM 
 	months m
 LEFT JOIN 

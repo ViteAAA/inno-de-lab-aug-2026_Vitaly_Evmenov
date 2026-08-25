@@ -1,15 +1,19 @@
 -- assingments of requests
 CREATE TABLE facts_RequestAssignments(
     RequestAssignmentsId SERIAL NOT NULL,
-    FK_Realty BIGINT NOT NULL,
-    FK_Tenant BIGINT NOT NULL,
-    FK_ContractId INTEGER NOT NULL,
-    FK_OrderId INTEGER NOT NULL,
-    FK_EmployeeId INTEGER NOT NULL,
+    FK_Realty BIGINT NOT NULL REFERENCES dim_realty(realtyid),
+    FK_Tenant BIGINT NOT NULL REFERENCES dim_tenants(tenantid),
+    FK_ContractId INTEGER NOT NULL REFERENCES dim_contracts(contractid),
+    FK_OrderId INTEGER NOT NULL REFERENCES dim_orders(orderid),
+    FK_EmployeeId INTEGER NOT NULL REFERENCES dim_employees(employeeid),
     StartOrderDate DATE NOT NULL,
     EndOrderDate DATE,
     Cost DECIMAL(8, 2) NOT NULL,
-    Rating INTEGER
+    Rating INTEGER,
+    
+    CONSTRAINT CHK_Cost CHECK (Cost >= 0),
+    CONSTRAINT CHK_Rating CHECK (Rating BETWEEN 1 AND 5),
+    CONSTRAINT CHK_EndOrderDate CHECK (EndOrderDate > StartOrderDate OR EndOrderDate = NULL)
 );
 ALTER TABLE
     facts_RequestAssignments ADD PRIMARY KEY(RequestAssignmentsId);
@@ -18,10 +22,10 @@ ALTER TABLE
 CREATE TABLE dim_Tenants(
     TenantId SERIAL NOT NULL,
     Email VARCHAR(250) NOT NULL,
-    PassportId BIGINT NOT NULL,
+    PassportId BIGINT NOT NULL UNIQUE,
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
-    DateOfBirthday DATE NOT NULL
+    DateOfBirthday DATE NOT NULL CHECK (DateOfBirthday > DATE'1900-01-01')
 );
 ALTER TABLE
     dim_Tenants ADD PRIMARY KEY(TenantId);
@@ -30,6 +34,7 @@ ALTER TABLE
 ALTER TABLE
     dim_Tenants ADD CONSTRAINT dim_tenants_passportid_unique UNIQUE(PassportId);
 
+	
 
 -- table of realty
 CREATE TABLE dim_Realty(
@@ -37,8 +42,11 @@ CREATE TABLE dim_Realty(
     Address VARCHAR(100) NOT NULL,
     Type VARCHAR(100) NOT NULL,
     Rooms INTEGER NOT NULL,
-    Area DECIMAL(8, 2) NOT NULL,
-    Description TEXT NOT NULL
+    Realty_Area DECIMAL(8, 2) NOT NULL,
+    Description TEXT NOT NULL,
+    
+    CONSTRAINT CHK_Rooms CHECK (Rooms > 0),
+    CONSTRAINT CHK_Area CHECK (Realty_Area > 0)
 );
 ALTER TABLE
     dim_Realty ADD PRIMARY KEY(RealtyId);
@@ -49,13 +57,15 @@ ALTER TABLE
 -- table of orders
 CREATE TABLE dim_Employees(
     EmployeeId SERIAL NOT NULL,
-    PassportId BIGINT NOT NULL,
+    PassportId BIGINT NOT NULL UNIQUE,
     Email VARCHAR(255) NOT NULL,
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
     EmploymentType VARCHAR(100) NOT NULL,
     ContractTerm DATE NOT NULL,
-    HireDate DATE NOT NULL
+    HireDate DATE NOT NULL,
+    
+    CONSTRAINT CHK_ValidContractTerm CHECK (ContractTerm > HireDate)
 );
 
 ALTER TABLE
@@ -73,17 +83,19 @@ CREATE TABLE dim_Contracts(
     ContractDescription TEXT NOT NULL,
     StartContractPeriod DATE NOT NULL,
     EndContractPeriod DATE NOT NULL,
-    Price DECIMAL NOT NULL
+    Price DECIMAL NOT NULL CHECK (Price >= 0),
+    
+    CONSTRAINT CHK_ValidContractPeriod CHECK (EndContractPeriod > StartContractPeriod)
 );
 ALTER TABLE
     dim_Contracts ADD PRIMARY KEY(ContractId);
 
 -- table of orders
 CREATE TABLE dim_Orders(
-    OrderId SERIAL NOT NULL,
-    OrderData DATE NOT NULL,
-    WorkType VARCHAR(255) NOT NULL,
-    Status VARCHAR(255) NOT NULL
+    OrderId 	SERIAL NOT NULL,
+    OrderDate 	DATE NOT NULL,
+    WorkType 	VARCHAR(255) NOT NULL,
+    Status 		VARCHAR(255) NOT NULL
 );
 ALTER TABLE
     dim_Orders ADD PRIMARY KEY(OrderId);
@@ -100,7 +112,7 @@ ALTER TABLE
     facts_RequestAssignments ADD CONSTRAINT facts_requestassignments_fk_contractid_foreign FOREIGN KEY(FK_ContractId) REFERENCES dim_Contracts(ContractId);
 
 -- 1. Realty
-INSERT INTO dim_realty (realtyid, address, type, rooms, area, description) VALUES
+INSERT INTO dim_realty (realtyid, address, type, rooms, realty_area, description) VALUES
 (1, 'ул. Ленина, д. 10, кв. 45', 'Квартира', 2, 48.5, 'Современная квартира рядом с метро'),
 (2, 'ул. Гагарина, д. 5, кв. 12', 'Квартира', 3, 72.0, 'Просторная квартира для семьи'),
 (3, 'ул. Пушкина, д. 20, оф. 301', 'Офис', 1, 35.0, 'Офисное помещение в бизнес-центре'),
