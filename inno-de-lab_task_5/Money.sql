@@ -1,4 +1,5 @@
-WITH months AS ( -- for generation all month in this year
+-- for generation all month in this year
+WITH months AS ( 
 	SELECT
 		TO_CHAR(d, 'YYYY-MM') AS analysis_month,
 		DATE_TRUNC('month', d) AS month_start,
@@ -10,7 +11,8 @@ WITH months AS ( -- for generation all month in this year
 	        INTERVAL '1 month'
 	    ) AS d
 ),
-monthly_expenses AS ( -- for calculation expenses in this year
+-- for calculation expenses in this year
+monthly_expenses AS ( 
 	SELECT 
 		TO_CHAR(fr.startorderdate, 'YYYY-MM') AS analysis_month,
 		SUM(fr.cost) AS expenses
@@ -23,7 +25,8 @@ monthly_expenses AS ( -- for calculation expenses in this year
 	GROUP BY 
 		TO_CHAR(fr.startorderdate, 'YYYY-MM')
 ),
-monthly_earned AS ( -- for calculation earning in every month
+-- for calculation earning in every month (and even if the contract runs for only a month)
+monthly_earned AS ( 
 	SELECT 
 		m.analysis_month,
 		SUM(dc.price) AS earned
