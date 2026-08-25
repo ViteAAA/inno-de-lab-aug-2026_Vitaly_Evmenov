@@ -171,8 +171,10 @@ INSERT INTO dim_orders (orderid, orderdate, worktype, status) VALUES
 (13, DATE'2026-08-08', 'Установка окон', 'Выполнено'),
 (14, DATE'2026-08-18', 'Сантехника', 'Выполнено');
 
+
 -- 6. Assignment of requests
 INSERT INTO facts_requestassignments (requestassignmentsid, fk_realty, fk_tenant, fk_contractid, fk_orderid, fk_employeeid, startorderdate, endorderdate, cost, rating) VALUES
+-- Завершенные заявки
 (1, 1, 1, 1, 1, 1, DATE'2026-01-10', DATE'2026-01-12', 800, 5),
 (2, 5, 5, 5, 2, 2, DATE'2026-01-25', DATE'2026-01-27', 1200, 4),
 (3, 2, 2, 2, 3, 3, DATE'2026-02-05', DATE'2026-02-08', 500, 5),
@@ -183,7 +185,11 @@ INSERT INTO facts_requestassignments (requestassignmentsid, fk_realty, fk_tenant
 (8, 2, 7, 7, 8, 4, DATE'2026-05-15', DATE'2026-05-17', 900, 5),
 (9, 5, 5, 5, 9, 1, DATE'2026-05-28', DATE'2026-05-29', 1800, 4),
 (10, 7, 8, 8, 10, 2, DATE'2026-06-10', DATE'2026-06-12', 2500, 5),
-(11, 8, 2, 10, 11, 3, DATE'2026-07-05', DATE'2026-07-07', 1100, 4),
-(12, 3, 3, 3, 12, 4, DATE'2026-07-20', DATE'2026-07-22', 2200, 5),
-(13, 1, 1, 1, 13, 1, DATE'2026-08-08', DATE'2026-08-10', 3500, 3),
-(14, 6, 6, 6, 14, 2, DATE'2026-08-18', DATE'2026-08-19', 800, 4);
+
+-- ОТКАЗАНО (Стоимость 0, оценки нет, дата окончания — день фиксации отказа)
+(11, 8, 2, 10, 11, 3, DATE'2026-07-05', DATE'2026-07-06', 0, NULL),
+(12, 3, 3, 3, 12, 4, DATE'2026-07-20', DATE'2026-07-21', 0, NULL),
+
+-- В ПРОЦЕССЕ (Даты окончания нет, стоимости и оценки тоже нет)
+(13, 1, 1, 1, 13, 1, DATE'2026-08-08', NULL, 3500, NULL),
+(14, 6, 6, 6, 14, 2, DATE'2026-08-18', NULL, 800, NULL);

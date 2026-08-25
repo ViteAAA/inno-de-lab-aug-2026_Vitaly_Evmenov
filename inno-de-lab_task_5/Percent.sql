@@ -6,6 +6,6 @@ SELECT
 FROM 
 	dim_orders
 WHERE 
-	orderdate > (CURRENT_DATE - INTERVAL '1 month')
+	orderdate > (CURRENT_DATE - INTERVAL '1 year')
 GROUP BY
 	status;
