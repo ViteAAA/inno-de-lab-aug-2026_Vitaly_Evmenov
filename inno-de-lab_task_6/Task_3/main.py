@@ -1,5 +1,5 @@
 # input degree in cel
-degree_in_cel = int(input("Введите температуру в градусах цельсия: "))
+degree_in_cel = float(input("Введите температуру в градусах цельсия: "))
 
 # input degree in fahrenheit
 degree_in_fahrenheit = degree_in_cel * 9 / 5 + 32
