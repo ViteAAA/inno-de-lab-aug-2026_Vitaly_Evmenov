@@ -4,7 +4,7 @@ actions = {
     "+": operator.add,
     "-": operator.sub,
     "*": operator.mul,
-    "/": operator.floordiv,
+    "/": operator.truediv,
 }
 
 first_number = float(input("Введите 1-ое число: "))
