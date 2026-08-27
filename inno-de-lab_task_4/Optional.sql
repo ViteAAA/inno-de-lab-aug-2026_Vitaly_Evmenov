@@ -8,7 +8,7 @@ ON ep.projectid = p.projectid
 WHERE 
 	e.firstname = 'Bob'
 	AND e.lastname = 'Johnson'
-	AND ep.hoursworked > 150
+	AND ep.hoursworked > 150;
 
 BEGIN;
 
