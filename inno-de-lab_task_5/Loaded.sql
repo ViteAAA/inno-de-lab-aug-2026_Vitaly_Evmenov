@@ -1,7 +1,7 @@
 -- for checking the workload of workers
 SELECT 
 	fr.fk_employeeid,
-	CONCAT(de.firstname, de.lastname) AS full_name,
+	CONCAT(de.firstname, " ", de.lastname) AS full_name,
 	COUNT(*) AS total_orders,
 	AVG(fr.rating)
 FROM 
