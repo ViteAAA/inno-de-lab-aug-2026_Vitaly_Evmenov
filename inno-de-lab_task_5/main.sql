@@ -137,7 +137,7 @@ INSERT INTO dim_employees (employeeid, passportid, email, firstname, lastname, e
 (3, 4515333333, 'lebedeva@company.ru', 'Татьяна', 'Лебедева', 'Юрист', '2025-12-31', DATE'2019-08-10'),
 (4, 4515444444, 'kuznetsov@company.ru', 'Павел', 'Кузнецов', 'Мастер', '2026-08-31', DATE'2022-01-20');
 
--- 4. Contracts (different scripts: with NULL endcontractperiod, ended, started in January)
+-- 4. Contracts
 INSERT INTO dim_contracts (contractid, contractdescription, startcontractperiod, endcontractperiod, price) VALUES
 (1, 'Договор аренды квартиры на Ленина', DATE'2026-01-01', DATE'2032-01-01', 1500),
 (2, 'Договор аренды квартиры на Гагарина', DATE'2026-01-01', DATE'2026-04-30', 2000),
