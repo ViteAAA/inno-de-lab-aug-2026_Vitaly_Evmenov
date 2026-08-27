@@ -13,7 +13,7 @@ CREATE TABLE facts_RequestAssignments(
     
     CONSTRAINT CHK_Cost CHECK (Cost >= 0),
     CONSTRAINT CHK_Rating CHECK (Rating BETWEEN 1 AND 5),
-    CONSTRAINT CHK_EndOrderDate CHECK (EndOrderDate > StartOrderDate OR EndOrderDate = NULL)
+    CONSTRAINT CHK_EndOrderDate CHECK (EndOrderDate > StartOrderDate OR EndOrderDate IS NULL)
 );
 ALTER TABLE
     facts_RequestAssignments ADD PRIMARY KEY(RequestAssignmentsId);
