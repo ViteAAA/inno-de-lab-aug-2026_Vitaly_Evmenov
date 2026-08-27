@@ -13,7 +13,7 @@ CREATE TABLE facts_RequestAssignments(
     
     CONSTRAINT CHK_Cost CHECK (Cost >= 0),
     CONSTRAINT CHK_Rating CHECK (Rating BETWEEN 1 AND 5),
-    CONSTRAINT CHK_EndOrderDate CHECK (EndOrderDate > StartOrderDate OR EndOrderDate IS NULL)
+    CONSTRAINT CHK_EndOrderDate CHECK (EndOrderDate > StartOrderDate OR EndOrderDate = NULL)
 );
 ALTER TABLE
     facts_RequestAssignments ADD PRIMARY KEY(RequestAssignmentsId);
@@ -78,13 +78,10 @@ ALTER TABLE
 -- table of contracts
 CREATE TABLE dim_Contracts(
     ContractId SERIAL NOT NULL,
-    TenantPassportId BIGINT NOT NULL,
-    RealtyId INTEGER NOT NULL,
     ContractDescription TEXT NOT NULL,
     StartContractPeriod DATE NOT NULL,
     EndContractPeriod DATE NOT NULL,
     Price DECIMAL NOT NULL CHECK (Price >= 0),
-    
     CONSTRAINT CHK_ValidContractPeriod CHECK (EndContractPeriod > StartContractPeriod)
 );
 ALTER TABLE
@@ -166,10 +163,10 @@ INSERT INTO dim_orders (orderid, orderdate, worktype, status) VALUES
 (8, DATE'2026-05-15', 'Ремонт крыши', 'Выполнено'),
 (9, DATE'2026-05-28', 'Сантехника', 'Выполнено'),
 (10, DATE'2026-06-10', 'Электрика', 'Выполнено'),
-(11, DATE'2026-07-05', 'Покраска', 'Выполнено'),
-(12, DATE'2026-07-20', 'Ремонт пола', 'Выполнено'),
-(13, DATE'2026-08-08', 'Установка окон', 'Выполнено'),
-(14, DATE'2026-08-18', 'Сантехника', 'Выполнено');
+(11, DATE'2026-07-05', 'Покраска', 'Отказано'),
+(12, DATE'2026-07-20', 'Ремонт пола', 'Отказано'),
+(13, DATE'2026-08-08', 'Установка окон', 'В процессе'),
+(14, DATE'2026-08-18', 'Сантехника', 'В процессе');
 
 
 -- 6. Assignment of requests
