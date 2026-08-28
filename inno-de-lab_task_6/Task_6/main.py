@@ -15,5 +15,5 @@ if math_operator in "+-*/" and not (math_operator == "/" and second_number == 0)
     result = actions[math_operator](first_number, second_number)
     print(f"Результат: {first_number} {math_operator} {second_number} = {result}")
 else:
-    print("Не верные данные")
+    print("Неверные данные")
 
