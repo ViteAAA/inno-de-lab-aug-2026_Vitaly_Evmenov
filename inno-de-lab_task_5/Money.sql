@@ -25,7 +25,7 @@ monthly_expenses AS (
 	GROUP BY 
 		TO_CHAR(fr.startorderdate, 'YYYY-MM')
 ),
--- for calculation earning in every month (and even if the contract runs for only a month)
+-- for calculating earnings for each month (even if the contract term covers only a single day of the month)
 monthly_earned AS ( 
 	SELECT 
 		m.analysis_month,
