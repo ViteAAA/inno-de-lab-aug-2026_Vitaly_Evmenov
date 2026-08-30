@@ -3,7 +3,7 @@ WITH months AS (
 	SELECT
 		TO_CHAR(d, 'YYYY-MM') AS analysis_month,
 		DATE_TRUNC('month', d) AS month_start,
-		DATE_TRUNC('month', d) + INTERVAL '1 month' - INTERVAL '2 day' AS month_end
+		DATE_TRUNC('month', d) + INTERVAL '1 month' AS month_end
 	FROM
 		generate_series(
 	        DATE_TRUNC('year', NOW()),
@@ -34,7 +34,7 @@ monthly_earned AS (
 		months m
 	INNER JOIN 
 		dim_contracts dc 
-		ON dc.startcontractperiod <= m.month_end
+		ON dc.startcontractperiod < m.month_end
 		AND dc.endcontractperiod >= m.month_start
 		AND dc.endcontractperiod >= DATE_TRUNC('year', NOW())
 	GROUP BY 
