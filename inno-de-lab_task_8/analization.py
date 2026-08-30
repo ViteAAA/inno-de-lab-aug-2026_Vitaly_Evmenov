@@ -45,7 +45,8 @@ def performance_logger(func):
         time_start = time.perf_counter()
         result = func(*args, **kwargs)
         time_end = time.perf_counter()
-        print(f"{PERFORMANCE_LOG_PREFIX} Функция '{func.__name__}' выполнена за {time_end - time_start} сек")
+        execution_time = time_end - time_start
+        print(f"{PERFORMANCE_LOG_PREFIX} Функция '{func.__name__}' выполнена за {execution_time:{TIME_DECIMALS}f} сек")
         return result
     return wrapper
 
