@@ -1,8 +1,6 @@
 -- assingments of requests
 CREATE TABLE facts_RequestAssignments(
-    RequestAssignmentsId SERIAL NOT NULL,
-    FK_Realty BIGINT NOT NULL REFERENCES dim_realty(realtyid),
-    FK_Tenant BIGINT NOT NULL REFERENCES dim_tenants(tenantid),
+    RequestAssignmentsId SERIAL PRIMARY KEY,
     FK_ContractId INTEGER NOT NULL REFERENCES dim_contracts(contractid),
     FK_OrderId INTEGER NOT NULL REFERENCES dim_orders(orderid),
     FK_EmployeeId INTEGER NOT NULL REFERENCES dim_employees(employeeid),
@@ -20,7 +18,7 @@ ALTER TABLE
 
 -- table of tenants
 CREATE TABLE dim_Tenants(
-    TenantId SERIAL NOT NULL,
+    TenantId SERIAL PRIMARY KEY,
     Email VARCHAR(250) NOT NULL,
     PassportId BIGINT NOT NULL UNIQUE,
     FirstName VARCHAR(100) NOT NULL,
@@ -38,7 +36,7 @@ ALTER TABLE
 
 -- table of realty
 CREATE TABLE dim_Realty(
-    RealtyId SERIAL NOT NULL,
+    RealtyId SERIAL PRIMARY KEY,
     Address VARCHAR(100) NOT NULL,
     Type VARCHAR(100) NOT NULL,
     Rooms INTEGER NOT NULL,
@@ -56,7 +54,7 @@ ALTER TABLE
 
 -- table of orders
 CREATE TABLE dim_Employees(
-    EmployeeId SERIAL NOT NULL,
+    EmployeeId SERIAL PRIMARY KEY,
     PassportId BIGINT NOT NULL UNIQUE,
     Email VARCHAR(255) NOT NULL,
     FirstName VARCHAR(100) NOT NULL,
@@ -77,7 +75,7 @@ ALTER TABLE
 
 -- table of contracts
 CREATE TABLE dim_Contracts(
-    ContractId SERIAL NOT NULL,
+    ContractId SERIAL PRIMARY KEY,
     ContractDescription TEXT NOT NULL,
     StartContractPeriod DATE NOT NULL,
     EndContractPeriod DATE NOT NULL,
@@ -89,7 +87,7 @@ ALTER TABLE
 
 -- table of orders
 CREATE TABLE dim_Orders(
-    OrderId 	SERIAL NOT NULL,
+    OrderId 	SERIAL PRIMARY KEY,
     OrderDate 	DATE NOT NULL,
     WorkType 	VARCHAR(255) NOT NULL,
     Status 		VARCHAR(255) NOT NULL
@@ -107,6 +105,16 @@ ALTER TABLE
     facts_RequestAssignments ADD CONSTRAINT facts_requestassignments_fk_realty_foreign FOREIGN KEY(FK_Realty) REFERENCES dim_Realty(RealtyId);
 ALTER TABLE
     facts_RequestAssignments ADD CONSTRAINT facts_requestassignments_fk_contractid_foreign FOREIGN KEY(FK_ContractId) REFERENCES dim_Contracts(ContractId);
+
+CREATE TABLE facts_ContractAssingments(
+	ContractAssingmentId	SERIAL PRIMARY KEY,
+	RealtyId				INT REFERENCES dim_Realty(RealtyId),
+	TenantId				INT REFERENCES dim_Tenants(TenantId),
+	ContractId				INT REFERENCES dim_contracts(ContractId),
+	CONSTRAINT UQ_Realty_Tenant UNIQUE (RealtyId, TenantId)
+);
+
+DROP TABLE facts_contractassingments;
 
 -- 1. Realty
 INSERT INTO dim_realty (realtyid, address, type, rooms, realty_area, description) VALUES
@@ -170,23 +178,38 @@ INSERT INTO dim_orders (orderid, orderdate, worktype, status) VALUES
 
 
 -- 6. Assignment of requests
-INSERT INTO facts_requestassignments (requestassignmentsid, fk_realty, fk_tenant, fk_contractid, fk_orderid, fk_employeeid, startorderdate, endorderdate, cost, rating) VALUES
+INSERT INTO facts_requestassignments (requestassignmentsid, fk_contractid, fk_orderid, fk_employeeid, startorderdate, endorderdate, cost, rating) VALUES
 -- Завершенные заявки
-(1, 1, 1, 1, 1, 1, DATE'2026-01-10', DATE'2026-01-12', 800, 5),
-(2, 5, 5, 5, 2, 2, DATE'2026-01-25', DATE'2026-01-27', 1200, 4),
-(3, 2, 2, 2, 3, 3, DATE'2026-02-05', DATE'2026-02-08', 500, 5),
-(4, 3, 3, 3, 4, 4, DATE'2026-02-20', DATE'2026-02-22', 1500, 4),
-(5, 4, 4, 9, 5, 1, DATE'2026-03-08', DATE'2026-03-09', 2000, 3),
-(6, 4, 4, 4, 6, 2, DATE'2026-03-22', DATE'2026-03-23', 750, 5),
-(7, 6, 6, 6, 7, 3, DATE'2026-04-12', DATE'2026-04-15', 3000, 4),
-(8, 2, 7, 7, 8, 4, DATE'2026-05-15', DATE'2026-05-17', 900, 5),
-(9, 5, 5, 5, 9, 1, DATE'2026-05-28', DATE'2026-05-29', 1800, 4),
-(10, 7, 8, 8, 10, 2, DATE'2026-06-10', DATE'2026-06-12', 2500, 5),
+(1, 1, 1, 1, DATE'2026-01-10', DATE'2026-01-12', 800, 5),
+(2, 5, 2, 2, DATE'2026-01-25', DATE'2026-01-27', 1200, 4),
+(3, 2, 3, 3, DATE'2026-02-05', DATE'2026-02-08', 500, 5),
+(4, 3, 4, 4, DATE'2026-02-20', DATE'2026-02-22', 1500, 4),
+(5, 4, 6, 2, DATE'2026-03-22', DATE'2026-03-23', 750, 5),
+(6, 6, 7, 3, DATE'2026-04-12', DATE'2026-04-15', 3000, 4),
+(7, 7, 8, 4, DATE'2026-05-15', DATE'2026-05-17', 900, 5),
+(8, 5, 9, 1, DATE'2026-05-28', DATE'2026-05-29', 1800, 4),
+(9, 8, 10, 2, DATE'2026-06-10', DATE'2026-06-12', 2500, 5),
 
 -- ОТКАЗАНО (Стоимость 0, оценки нет, дата окончания — день фиксации отказа)
-(11, 8, 2, 10, 11, 3, DATE'2026-07-05', DATE'2026-07-06', 0, NULL),
-(12, 3, 3, 3, 12, 4, DATE'2026-07-20', DATE'2026-07-21', 0, NULL),
+(10, 8, 2, 10, 11, 3, DATE'2026-07-05', DATE'2026-07-06', 0, NULL),
+(11, 3, 3, 3, 12, 4, DATE'2026-07-20', DATE'2026-07-21', 0, NULL),
 
 -- В ПРОЦЕССЕ (Даты окончания нет, стоимости и оценки тоже нет)
-(13, 1, 1, 1, 13, 1, DATE'2026-08-08', NULL, 3500, NULL),
-(14, 6, 6, 6, 14, 2, DATE'2026-08-18', NULL, 800, NULL);
+(12, 1, 1, 1, 13, 1, DATE'2026-08-08', NULL, 3500, NULL),
+(13, 6, 6, 6, 14, 2, DATE'2026-08-18', NULL, 800, NULL);
+
+
+-- Таблица фактов процесса зключения контракта
+INSERT INTO facts_contractassingments (ContractAssingmentId, RealtyId, TenantId, ContractId) VALUES 
+(1, 1, 1, 1),
+(2, 5, 5, 5),
+(3, 2, 2, 2),
+(4, 3, 3, 3),
+(5, 4, 4, 4),
+(6, 6, 6, 6),
+(7, 2, 7, 7),
+(8, 7, 8, 8),
+(9, 8, 2, 10),
+(10, 4, 7, 9);
+
+

@@ -1,7 +1,7 @@
 -- for checking the workload of workers by total time spent
 SELECT 
 	fr.fk_employeeid,
-	CONCAT(de.firstname, " ", de.lastname) AS full_name,
+	CONCAT(de.firstname, ' ', de.lastname) AS full_name,
 	SUM(fr.endorderdate - fr.startorderdate) AS total_working_time,
 	COUNT(*) AS total_orders,
 	AVG(fr.rating) AS average_rating
