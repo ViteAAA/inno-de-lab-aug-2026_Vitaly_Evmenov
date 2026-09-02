@@ -1,69 +1,103 @@
 import time
+from typing import Any, Callable
 
 from CONSTANTS import PERFORMANCE_LOG_PREFIX, TIME_DECIMALS
 
 # initialize data
-case_standard:  list[dict[str, str | float]] = [
+case_standard: list[dict[str, str | float]] = [
     {"category": "Action", "total_sales": 4311.85},
     {"category": "Animation", "total_sales": 4656.30},
     {"category": "Children", "total_sales": 3655.55}
 ]
-case_identical_revenue:  list[dict[str, str | float]] = [
+case_identical_revenue: list[dict[str, str | float]] = [
     {"category": "Classics", "total_sales": 1200.10},
     {"category": "Comedy", "total_sales": 4000.00},
     {"category": "Documentary", "total_sales": 4000.00}
 ]
-case_single_item:  list[dict[str, str | float]] = [
+case_single_item: list[dict[str, str | float]] = [
     {"category": "Drama", "total_sales": 500.00}
 ]
 
-def print_result(result: list[dict[str, str | float]], test_index: int) -> None:
+
+def print_result(result: list[dict[str, str | float]]) -> None:
+    """Prints the top categories by revenue.
+
+    Prints a numbered list of categories with their total sales.
+    The test_index parameter is passed for interface compatibility,
+    but is not used when generating the output.
+
+    Args:
+        result: A list of dictionaries with keys 'category' and 'total_sales'.
+        test_index: The test index (integer).
+
+    Returns:
+        None
     """
-    prints result
-    :param result: dictionary list to print
-    :param test_index: index of test
-    :return: no return value
-    """
-    print("Топ категорий по выручке:")
+    print("Top categories by revenue:")
     for index, item in enumerate(result):
-        print(f"{index + 1}: {item['category']}: {item['total_sales']}")
+        print(f"{index + 1}: {item['category']}: {float(item['total_sales'])}")
     print("\n\n")
 
-def performance_logger(func):
+
+def performance_logger(func: Callable[..., Any]) -> Callable[..., Any]:
+    """Decorator for measuring and logging function execution time.
+
+    Wraps the target function, measuring its execution time
+    using time.perf_counter().
+
+    Args:
+        func: The function whose execution time needs to be measured.
+
+    Returns:
+        A wrapper function that performs the time measurement,
+        prints a log message, and returns the result of the original function.
     """
-    decorator for performance logger
-    :param func: function, which execution time calculates
-    :return: return function
-    """
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any):
+        """Executes the time measurement and calls the decorated function.
+
+        Records the time before and after the original function execution,
+        calculates the duration, and prints a message to the console.
+
+        Args:
+            *args: Positional arguments passed to the decorated function.
+            **kwargs: Keyword arguments passed to the decorated function.
+
+        Returns:
+            The result of the decorated function execution.
         """
-        calculates execution time
-        :param args: *args
-        :param kwargs: **kwargs
-        :return: execution time
-        """
-        time_start = time.perf_counter()
-        result = func(*args, **kwargs)
-        time_end = time.perf_counter()
-        execution_time = time_end - time_start
-        print(f"{PERFORMANCE_LOG_PREFIX} Функция '{func.__name__}' выполнена за {execution_time:{TIME_DECIMALS}f} сек")
+        time_start: float = time.perf_counter()
+        result: Any = func(*args, **kwargs)
+        time_end: float = time.perf_counter()
+        execution_time: float = time_end - time_start
+        print(f"{PERFORMANCE_LOG_PREFIX} Function '{func.__name__}' executed in {execution_time:.{TIME_DECIMALS}f} sec")
         return result
     return wrapper
 
+
 @performance_logger
 def get_sorted_report(unsorted_report: list[dict[str, str | float]]) -> list[dict[str, str | float]]:
+    """Sorts the report by categories in descending order of revenue.
+
+    Uses the built-in sorted function with a lambda function
+    as the sorting key based on the 'total_sales' field.
+
+    Args:
+        unsorted_report: An unsorted list of dictionaries
+            containing category data and its revenue.
+
+    Returns:
+        A new list of dictionaries sorted by the 'total_sales' field
+        in descending order.
     """
-    sorts unsorted_report
-    :param unsorted_report: unsorted_data
-    :return: sorted_data
-    """
-    result = sorted(unsorted_report, key=lambda x: x["total_sales"], reverse=True)
+    result: list[dict[str, str | float]] = sorted(unsorted_report, key=lambda x: x["total_sales"], reverse=True)
     return result
 
+
 # printing results
-print(f"--- ТЕСТ 1 ---")
-print_result(get_sorted_report(case_standard), 1)
-print(f"--- ТЕСТ 2 ---")
-print_result(get_sorted_report(case_identical_revenue), 2)
-print(f"--- ТЕСТ 3 ---")
-print_result(get_sorted_report(case_single_item), 3)
+print("=== ТЕСТИРОВАНИЕ ПРОИЗВОДИТЕЛЬНОСТИ === \n")
+print(f"--- TEST 1 ---")
+print_result(get_sorted_report(case_standard))
+print(f"--- TEST 2 ---")
+print_result(get_sorted_report(case_identical_revenue))
+print(f"--- TEST 3 ---")
+print_result(get_sorted_report(case_single_item))
