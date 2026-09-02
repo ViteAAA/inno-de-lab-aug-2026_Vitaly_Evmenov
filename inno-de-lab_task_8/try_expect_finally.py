@@ -29,18 +29,18 @@ def calculate_overdue_fine(film_name: str, days_overdue: Any, fine_rate: Any) ->
         numeric_days = float(days_overdue)
         total_fine: float = numeric_days * fine_rate
         return_index: float = DEFAULT_RETURN_INDEX_BASE / numeric_days
-        print(f"Film: {film_name.title()} | Total fine: {total_fine}$ | Index: {return_index}")
+        print(f"Фильм: {film_name.title()} | Итоговый штраф: {total_fine}$ | Индекс: {return_index}")
         return total_fine, return_index
-    except TypeError:
-        print(f"[TYPE ERROR] Invalid data type for '{film_name.title()}': float() argument must be a string or a real number, not '{type(days_overdue).__name__}'")
-    except ValueError:
-        print(f"[VALUE ERROR] Cannot convert days to a number for '{film_name.title()}': could not convert string to float: '{days_overdue}'")
-    except ZeroDivisionError:
-        print(f"[ZERO DIVISION ERROR] Return without overdue for '{film_name.title()}': float division by zero")
+    except TypeError as e:
+        print(f"[ОШИБКА ТИПА] Некорректный тип данных для '{film_name.title()}': {e}")
+    except ValueError as e:
+        print(f"[ОШИБКА ЗНАЧЕНИЯ] Невозможно преобразовать дни в число для '{film_name.title()}': {e}")
+    except ZeroDivisionError as e:
+        print(f"[ОШИБКА ДЕЛЕНИЯ НА НОЛЬ] Возврат без просрочки для '{film_name.title()}': {e}")
     except Exception as e:
         print(e)
     finally:
-        print(" --- Return transaction check completed ---\n\n")
+        print(" --- Проверка транзакции возврата завершена ---\n\n")
 
 
 for name, data_tuple in initialize_data.items():
