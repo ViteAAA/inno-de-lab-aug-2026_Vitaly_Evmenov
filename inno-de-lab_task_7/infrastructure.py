@@ -34,7 +34,7 @@ result_dict["active_nodes_count"] = len(active_names)
 # set metrics field in result dictionary
 result_dict.update({
     "metrics": {
-        "average_cpu": sum(active_cpu) / len(active_cpu),
+        "average_cpu": round(sum(active_cpu) / len(active_cpu), 2),
         "max_ram": max(active_mem),
     }
 })

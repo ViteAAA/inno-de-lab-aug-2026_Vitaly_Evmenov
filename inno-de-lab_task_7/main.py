@@ -1,16 +1,13 @@
-raw_user_record = input("Please enter your user record: ")
+raw_user_record = " 10827 ; aLeXanDer_vLaDimiRov ; mInSk ; ACTIVE "
 # split string by separator
 sorted_data = raw_user_record.split(";")
-
-# flag for validation
-valid_flag = True
 
 # function for formating uid
 def format_uid(uid):
     new_uid = int(uid)
     if not str(new_uid) == uid:
         return None
-    return f"UHD-{new_uid}"
+    return f"UID-{new_uid}"
 
 # function for formating fullname
 def format_fullname(fullname):
@@ -54,11 +51,8 @@ for index, data in enumerate(sorted_data):
 
 normalize_user_record = raw_user_record
 
-# check is valid data?
-if valid_flag:
-    sorted_data = " | ".join(new_collection)
-    print(f"Нормализованная запись: {sorted_data}")
-else:
-    print("incorrect data")
+# print data
+sorted_data = " | ".join(new_collection)
+print(f"Нормализованная запись: {sorted_data}")
 
 

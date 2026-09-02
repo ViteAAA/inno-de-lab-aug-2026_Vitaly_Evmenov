@@ -16,5 +16,5 @@ print(f"Общие административные роли: {united_admin_role
 not_included_admin_roles = required_admin_roles.difference(unique_set)
 print(f"Недостающие административные роли: {not_included_admin_roles}")
 
-# check including security_officer in united_admin_roles
-print(f"Наличие роли security_officer в запросе: {'security_officer' in united_admin_roles}")
+# check including security_officer in unique_set
+print(f"Наличие роли security_officer в запросе: {'security_officer' in unique_set}")

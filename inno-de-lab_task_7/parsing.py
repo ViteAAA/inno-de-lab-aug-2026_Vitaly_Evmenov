@@ -19,7 +19,7 @@ if connections.get("user") is not None:
     connections["user"] = "admin"
 
 # get ssl_mode from connections
-ssl_mode = connections.get("ssl_mode", {}).get("ssl_mode", "verify-full")
+ssl_mode = connections.get("ssl_settings", {}).get("ssl_mode", "verify-full")
 
 # create field max_connections in connections
 connections["max_connections"] = 100
@@ -34,7 +34,3 @@ for key, value in connections.items():
     print(f"* {key}: {value}")
 
 
-
-
-# connections: dict = db_config.get("connection", {})
-# print(connections)
