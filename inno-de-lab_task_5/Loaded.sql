@@ -4,7 +4,7 @@ SELECT
 	CONCAT(de.firstname, ' ', de.lastname) AS full_name,
 	SUM(fr.endorderdate - fr.startorderdate) AS total_working_time,
 	COUNT(*) AS total_orders,
-	AVG(fr.rating) AS average_rating
+	ROUND(AVG(fr.rating), 2) AS average_rating
 FROM 
 	facts_requestassignments fr
 INNER JOIN 

@@ -15,7 +15,7 @@ WITH months AS (
 monthly_expenses AS ( 
 	SELECT 
 		TO_CHAR(fr.startorderdate, 'YYYY-MM') AS analysis_month,
-		SUM(fr.cost) AS expenses
+		SUM(fr.ordercost) AS expenses
 	FROM 
 		facts_requestassignments fr
 	WHERE 
