@@ -1,21 +1,21 @@
 class Trainee:
 
-    def __init__(self, name, surname, score = 0, passing_grade = 10):
+    def __init__(self, name: str, surname: str, score: int = 0, passing_grade: int = 10):
         self.name: str = name
         self.surname: str = surname
         self.passing_grade: int = passing_grade
-        self.__score: int = score
+        self.score = score
 
     @property
-    def score(self):
+    def score(self) -> int:
         return self.__score
 
     @score.setter
-    def score(self, new_score: int):
-        if not isinstance(new_score, int):
+    def score(self, new_score: int) -> None:
+        if type(new_score) is not int:
             raise ValueError(f"Expected value of type int, got {type(new_score)}")
         elif new_score < 0:
-            raise ValueError(f"The score shouldn't be less than 0!")
+            raise ValueError("The score shouldn't be less than 0!")
 
         self.__score = new_score
 
@@ -39,6 +39,7 @@ class Trainee:
         """Check student passes or not"""
         return self.score >= self.passing_grade
 
+
 class HardworkingTrainee(Trainee):
 
     def do_homework(self) -> None:
@@ -48,14 +49,14 @@ class HardworkingTrainee(Trainee):
 class AuditTrainee(Trainee):
 
     def is_passing(self) -> bool:
-        """Returns always Trye"""
+        """Returns always True"""
         return True
 
 class Cohort:
 
-    def __init__(self, title: str, trainees: list[Trainee] = []):
+    def __init__(self, title: str, trainees: list[Trainee] | None = None):
         self.title: str = title
-        self.trainees: list[Trainee] = trainees
+        self.trainees: list[Trainee] = list(trainees if trainees is not None else [])
 
     def add_trainee(self, trainee: Trainee) -> None:
         """Adds Trainee in group"""
@@ -71,6 +72,28 @@ class Cohort:
         passing_students = [trainee for trainee in self.trainees if trainee.is_passing()]
         return passing_students
 
+    
+# TASK 1 - DEMO MAIN
+print("=== ПРОВЕРКА УСПЕВАЕМОСТИ СТАЖЕРА ===")
+
+# 1. Создание стажера с начальным баллом 9 и проходным баллом 10 
+trainee = Trainee(name="Иван", surname="Иванов", score=9, passing_grade=10) 
+# 2. Выполнение домашнего задания и проверка статуса 
+trainee.do_homework() 
+print(f"Баллы: {trainee.score}, Прошел курс: {trainee.is_passing()}") 
+# 3. Пропуск лекции и проверка статуса 
+trainee.miss_lecture() 
+print(f"Баллы: {trainee.score}, Прошел курс: {trainee.is_passing()}") 
+# 4. Проверка валидации (попытка задать неверный тип или отрицательное значение) 
+try: 
+    trainee.score = -5 
+except ValueError as e: 
+    print(f"Ошибка: {e}") 
+print("=====================================\n\n")
+
+
+
+# TASK 2 - DEMO OPTIONAL
 # 1. Создаем учащихся разных типов 
 std_trainee = Trainee("Алексей", "Смирнов", score=8, passing_grade=10) 
 hard_trainee = HardworkingTrainee("Елена", "Петрова", score=8, passing_grade=10) 
@@ -92,4 +115,3 @@ for student in cohort.trainees:
 print("\nУспешно зачислены на следующий модуль:") 
 for student in passing_students: 
     print(f"- {student.name} {student.surname}") 
-        
