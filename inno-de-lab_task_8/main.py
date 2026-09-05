@@ -25,25 +25,16 @@ def calculate_rental_batch(quantity: int, rental_rate: float, discount: float = 
 # Academy Dinosaur
 print("Партия 1 (Academy Dinosaur):")
 rental_batch: tuple[float, bool] = calculate_rental_batch(30, 2.99)
-print(f"Сумма: {rental_batch[0]}. Превышение лимита: {rental_batch[1]}")
-
-rental_batch: tuple[float, bool] = calculate_rental_batch(quantity=30, rental_rate=2.99)
 print(f"Сумма: {rental_batch[0]}. Превышение лимита: {rental_batch[1]}\n\n")
 
 
 # Affair Prejudice
 print("Партия 2 (Affair Prejudice):")
 rental_batch = calculate_rental_batch(40, 4.99, 0.1)
-print(f"Сумма: {rental_batch[0]}. Превышение лимита: {rental_batch[1]}")
-
-rental_batch = calculate_rental_batch(quantity=40, rental_rate=4.99, discount=0.1)
 print(f"Сумма: {rental_batch[0]}. Превышение лимита: {rental_batch[1]}\n\n")
 
 # Agent Truman
 print("Партия 3 (Agent Truman):")
-rental_batch: tuple[float, bool] = calculate_rental_batch(10, 1.99)
-print(f"Сумма: {rental_batch[0]}. Превышение лимита: {rental_batch[1]}")
-
 rental_batch: tuple[float, bool] = calculate_rental_batch(quantity=10, rental_rate=1.99)
 print(f"Сумма: {rental_batch[0]}. Превышение лимита: {rental_batch[1]}\n\n")
 
@@ -52,6 +43,3 @@ print(f"Сумма: {rental_batch[0]}. Превышение лимита: {renta
 print("Партия 4 (African Egg):")
 rental_batch = calculate_rental_batch(50, 3.50, 0.2)
 print(f"Сумма: {rental_batch[0]}. Превышение лимита: {rental_batch[1]}")
-
-rental_batch = calculate_rental_batch(quantity=50, rental_rate=3.50, discount=0.2)
-print(f"Сумма: {rental_batch[0]}. Превышение лимита: {rental_batch[1]}\n\n")
