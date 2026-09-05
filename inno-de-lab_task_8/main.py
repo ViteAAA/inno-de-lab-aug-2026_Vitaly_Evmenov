@@ -18,8 +18,8 @@ def calculate_rental_batch(quantity: int, rental_rate: float, discount: float = 
     """
     final_sum: float = quantity * rental_rate * (1 - discount)
     final_sum = round(final_sum, 2)
-    is_limit_exited: bool = final_sum > MAX_RENTAL_BATCH_LIMIT
-    return final_sum, is_limit_exited
+    is_limit_exceeded: bool = final_sum > MAX_RENTAL_BATCH_LIMIT
+    return final_sum, is_limit_exceeded
 
 
 # Academy Dinosaur
